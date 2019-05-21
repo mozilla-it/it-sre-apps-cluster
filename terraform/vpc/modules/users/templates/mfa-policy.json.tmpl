@@ -1,0 +1,48 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowIndividualUserToListVirtualMFADevices",
+      "Effect": "Allow",
+      "Action": [
+        "iam:ListVirtualMFADevices"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AllowIndividualUserToCreateTheirMFA",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateVirtualMFADevice"
+      ],
+      "Resource": [
+        "arn:aws:iam::${account_id}:mfa/$${aws:username}"
+      ]
+    },
+    {
+      "Sid": "AllowIndividualUserToManageTheirMFA",
+      "Effect": "Allow",
+      "Action": [
+        "iam:EnableMFADevice",
+        "iam:ResyncMFADevice"
+      ],
+      "Resource": [
+        "arn:aws:iam::${account_id}:user/${path_prefix}/users/$${aws:username}"
+      ]
+    },
+    {
+        "Sid": "AllowUserToAssumeRole",
+        "Effect": "Allow",
+        "Action": "sts:AssumeRole",
+        "Resource": [
+            ${admin_arn},
+            ${readonly_arn}
+        ],
+        "Condition": {
+            "Bool": {
+                "aws:MultiFactorAuthPresent": "true"
+            }
+        }
+    }
+  ]
+}
