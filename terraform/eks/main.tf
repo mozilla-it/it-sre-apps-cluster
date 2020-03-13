@@ -5,7 +5,7 @@ locals {
     {
       asg_desired_capacity  = "2"
       asg_max_size          = "10"
-      asg_min_size          = "2"
+      asg_min_size          = "1"
       asg_force_delete      = true
       autoscaling_enabled   = true
       protect_from_scale_in = false
